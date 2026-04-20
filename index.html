@@ -1,0 +1,1515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- ✏️  Replace Esther throughout this file with your actual name -->
+<title>Esther's Dugout · IPL 2026</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏏</text></svg>">
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+
+:root {
+  --carbon:     #020305;
+  --carbon-2:   #07090e;
+  --carbon-3:   #0d1018;
+  --paper:      #090c12;
+  --paper-2:    #0e1219;
+  --paper-3:    #151b26;
+  --ink:        #dce4f0;
+  --ink-2:      #c4d4e8;
+  --ink-3:      #a0b4c8;
+
+  /* CSK yellow as primary accent — replaces teal in the F1 template */
+  --gold:       #F9C110;
+  --gold-dim:   #c49a0a;
+  --csk:        #F9C110;
+
+  /* "Danger" accent — deep red used for borders, title line 2 */
+  --racing:     #c0392b;
+  --racing-hot: #e74c3c;
+
+  /* IPL team palette */
+  --t-csk:   #F9C110;
+  --t-rcb:   #E41B22;
+  --t-mi:    #004BA0;
+  --t-kkr:   #3A225D;
+  --t-srh:   #E96B28;
+  --t-rr:    #2B4DA5;
+  --t-gt:    #C8952A;
+  --t-pbks:  #ED1B24;
+  --t-lsg:   #00A880;
+  --t-dc:    #0078BC;
+
+  --rule-light: #16202e;
+}
+
+/* ── Animations ────────────────────────────────────────────────── */
+@keyframes maskRevealUp {
+  0%   { clip-path: inset(100% 0 0 0); transform: translateY(20px); }
+  100% { clip-path: inset(0 0 0 0);    transform: translateY(0); }
+}
+@keyframes fadeSlow  { from { opacity:0; } to { opacity:1; } }
+@keyframes fadeUpSlow {
+  from { opacity:0; transform:translateY(18px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+@keyframes underlineDraw {
+  0%   { transform:scaleX(0); transform-origin:left; }
+  100% { transform:scaleX(1); transform-origin:left; }
+}
+@keyframes ticker { 0% { transform:translateX(0); } 100% { transform:translateX(-50%); } }
+@keyframes pulseDot {
+  0%,100% { opacity:.5; transform:scale(1); }
+  50%     { opacity:1;  transform:scale(1.2); }
+}
+@keyframes blink { 0%,100% { opacity:1; } 50% { opacity:.25; } }
+@keyframes speedLineSlow {
+  0%   { transform:translateX(-200px); opacity:0; }
+  20%  { opacity:.45; }
+  100% { transform:translateX(calc(100vw + 200px)); opacity:0; }
+}
+@keyframes barGrowSlow {
+  0%   { transform:scaleX(0); transform-origin:left; }
+  100% { transform:scaleX(1); }
+}
+@keyframes rowSlide {
+  from { opacity:0; transform:translateX(-24px); }
+  to   { opacity:1; transform:translateX(0); }
+}
+@keyframes numCountUp {
+  from { opacity:0; transform:translateY(14px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+@keyframes checkerFadeIn {
+  from { opacity:0; transform:scale(.8); }
+  to   { opacity:1; transform:scale(1); }
+}
+@keyframes batSwing {
+  0%,100% { transform:rotate(0deg); }
+  50%     { transform:rotate(18deg); }
+}
+
+/* ── Base ──────────────────────────────────────────────────────── */
+html { scroll-behavior:smooth; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Inter', sans-serif;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  background-image: radial-gradient(rgba(249,193,16,.03) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+/* ── Ticker ────────────────────────────────────────────────────── */
+.ticker-wrap {
+  background: var(--carbon);
+  height: 44px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  border-bottom: 2px solid var(--csk);
+  box-shadow: 0 2px 24px rgba(249,193,16,.18), 0 0 60px rgba(249,193,16,.06);
+  position: relative;
+  animation: fadeSlow .9s ease both;
+}
+.ticker-wrap::before, .ticker-wrap::after {
+  content:''; position:absolute; top:0; bottom:0; width:80px; z-index:2; pointer-events:none;
+}
+.ticker-wrap::before { left:0;  background:linear-gradient(90deg,  var(--carbon), transparent); }
+.ticker-wrap::after  { right:0; background:linear-gradient(270deg, var(--carbon), transparent); }
+.ticker-track {
+  display:flex; white-space:nowrap;
+  animation: ticker 52s linear infinite;
+  will-change: transform;
+}
+.ticker-track:hover { animation-play-state:paused; }
+.tick {
+  display:inline-flex; align-items:center; gap:8px;
+  padding:0 26px;
+  font-family:'JetBrains Mono', monospace;
+  font-size:11px; font-weight:500; letter-spacing:.08em;
+  color:rgba(255,255,255,.55); text-transform:uppercase;
+}
+.tick .sym { color:var(--t-rcb); font-weight:600; letter-spacing:.14em; }
+.tick .sym.c { color:var(--csk); }
+.tick .val { color:#fff; font-weight:600; }
+.tick .pts { color:var(--csk); font-weight:500; }
+.tick-dot { color:rgba(255,255,255,.5); padding:0 4px; font-size:9px; }
+
+/* ── Hero ──────────────────────────────────────────────────────── */
+.hero {
+  background: var(--paper);
+  padding: 56px 36px 32px;
+  max-width: 1440px;
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+}
+.speed-line {
+  position:absolute; top:0; left:0;
+  height:1px;
+  background: linear-gradient(90deg, transparent 0%, var(--csk) 50%, transparent 100%);
+  animation: speedLineSlow 5.5s ease-out infinite;
+  pointer-events: none;
+}
+.speed-line:nth-child(1) { top:18%; width:160px; animation-delay:1.8s; }
+.speed-line:nth-child(2) { top:42%; width:220px; animation-delay:3.2s; }
+.speed-line:nth-child(3) { top:68%; width:120px; animation-delay:2.4s; }
+
+.hero-top {
+  display:flex; justify-content:space-between; align-items:flex-start;
+  margin-bottom:28px;
+  animation: fadeUpSlow 1s ease both .2s;
+}
+.brand-eyebrow {
+  display:inline-flex; align-items:center; gap:18px;
+  font-family:'JetBrains Mono', monospace;
+  font-size:11px; font-weight:600; letter-spacing:.24em;
+  text-transform:uppercase; color:var(--ink);
+  animation: checkerFadeIn .9s cubic-bezier(.2,.8,.2,1) both .5s;
+}
+.cricket-icon {
+  display:inline-block; font-size:28px; line-height:1;
+  animation: batSwing 3s ease-in-out infinite;
+  transform-origin:center bottom;
+}
+.brand-right { text-align:right; animation: fadeUpSlow 1s ease both .7s; }
+.greeting {
+  font-family:'Chakra Petch', serif;
+  font-style:italic; font-size:15px; color:var(--ink-2); margin-bottom:4px;
+}
+.dateline {
+  font-family:'JetBrains Mono', monospace;
+  font-size:10px; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-3);
+}
+
+.title-wrap { position:relative; margin-bottom:28px; padding-bottom:24px; }
+.hero-title {
+  font-family:'Chakra Petch', serif;
+  font-weight:700; line-height:.95; letter-spacing:-.03em; color:var(--ink);
+}
+.hero-title .line1 {
+  display:block; font-size:clamp(56px, 9vw, 126px); line-height:1.1; overflow:hidden; padding-bottom:.05em;
+}
+.hero-title .line1 span {
+  display:inline-block;
+  animation: maskRevealUp 1.1s cubic-bezier(.2,.9,.25,1) both .9s;
+}
+.hero-title .line2 {
+  display:block; font-size:clamp(56px, 9vw, 126px);
+  font-style:italic; color:var(--csk); line-height:1.1;
+  overflow:hidden; margin-top:-.05em; padding-bottom:.05em;
+}
+.hero-title .line2 span {
+  display:inline-block;
+  animation: maskRevealUp 1.1s cubic-bezier(.2,.9,.25,1) both 1.4s;
+}
+.title-underline {
+  position:absolute; left:0; bottom:0;
+  height:5px; width:100%;
+  background: linear-gradient(90deg, var(--racing) 0%, var(--csk) 100%);
+  box-shadow: 0 0 18px rgba(249,193,16,.5), 0 0 40px rgba(192,57,43,.25);
+  transform:scaleX(0); transform-origin:left;
+  animation: underlineDraw 1.2s cubic-bezier(.3,.9,.3,1) both 2.2s;
+}
+
+.hero-sub {
+  font-family:'JetBrains Mono', monospace;
+  font-size:12px; letter-spacing:.2em; text-transform:uppercase; color:var(--ink-2);
+  padding-top:20px; border-top:1px solid var(--ink);
+  display:flex; justify-content:space-between; align-items:center;
+  animation: fadeUpSlow 1s ease both 2.8s;
+}
+.live-badge {
+  display:inline-flex; align-items:center; gap:10px;
+  padding:8px 14px;
+  background:var(--csk); color:#000;
+  font-weight:700; letter-spacing:.2em;
+}
+.live-badge::before {
+  content:'';
+  display:inline-block; width:7px; height:7px;
+  background:#000; border-radius:50%;
+  animation: blink 1.6s ease infinite;
+}
+
+/* ── Next Match Hero ───────────────────────────────────────────── */
+.match-hero {
+  margin:0 auto; max-width:1440px;
+  padding:0 36px;
+  animation: fadeUpSlow 1.1s ease both 3.2s;
+}
+.match-block {
+  background:var(--carbon); color:#fff;
+  padding:44px 48px 46px;
+  margin-top:16px;
+  position:relative; overflow:hidden;
+  border-top:5px solid var(--csk);
+}
+.match-block::before {
+  content:'';
+  position:absolute; inset:0;
+  background: repeating-linear-gradient(135deg, rgba(249,193,16,.022) 0 2px, transparent 2px 16px);
+  pointer-events:none; z-index:0;
+}
+.match-block::after {
+  content:'';
+  position:absolute; top:0; right:0;
+  width:280px; height:56px;
+  background:
+    linear-gradient(45deg,#fff 25%,transparent 25%,transparent 75%,#fff 75%),
+    linear-gradient(45deg,#fff 25%,transparent 25%,transparent 75%,#fff 75%);
+  background-size:14px 14px;
+  background-position:0 0,7px 7px;
+  background-color:#000;
+  opacity:.1; z-index:0;
+}
+.match-grid {
+  display:grid; grid-template-columns:1.3fr 1fr;
+  gap:48px; position:relative; z-index:1;
+}
+.match-meta-row {
+  display:flex; align-items:center; gap:14px; margin-bottom:18px;
+}
+.match-round {
+  font-family:'JetBrains Mono', monospace;
+  font-size:11px; font-weight:600; letter-spacing:.22em; text-transform:uppercase;
+  color:var(--csk); padding:7px 13px;
+  border:1px solid var(--csk); background:rgba(249,193,16,.12);
+}
+.match-flag-big { font-size:32px; }
+.match-name {
+  font-family:'Chakra Petch', serif;
+  font-size:clamp(44px, 6vw, 76px); font-weight:700; line-height:.92; letter-spacing:-.025em;
+  color:#fff; margin-bottom:16px;
+}
+.match-name em { font-style:italic; color:var(--csk); font-weight:500; }
+.match-venue {
+  font-family:'Inter', sans-serif; font-size:14px;
+  color:rgba(255,255,255,.68); margin-bottom:6px; letter-spacing:.01em;
+}
+.match-venue strong { color:#fff; font-weight:500; }
+.match-stats {
+  display:flex; gap:36px; margin-top:24px; padding-top:22px;
+  border-top:1px solid rgba(255,255,255,.15);
+}
+.match-stat { display:flex; flex-direction:column; }
+.match-stat-label {
+  font-family:'JetBrains Mono', monospace;
+  font-size:9px; letter-spacing:.18em; text-transform:uppercase;
+  color:rgba(255,255,255,.5); margin-bottom:7px;
+}
+.match-stat-val {
+  font-family:'JetBrains Mono', monospace;
+  font-size:15px; font-weight:500; color:#fff;
+}
+.match-right { display:flex; flex-direction:column; justify-content:center; }
+.countdown-label {
+  font-family:'JetBrains Mono', monospace;
+  font-size:10px; letter-spacing:.26em; text-transform:uppercase;
+  color:rgba(255,255,255,.55); margin-bottom:20px;
+  display:flex; align-items:center; gap:10px;
+}
+.countdown-label::before {
+  content:''; width:7px; height:7px;
+  background:var(--csk); border-radius:50%;
+  animation: pulseDot 1.8s ease infinite;
+}
+.countdown {
+  display:grid; grid-template-columns:repeat(4,1fr); gap:8px;
+}
+.cd-cell {
+  background:var(--carbon-3); padding:20px 8px 16px; text-align:center;
+  border:1px solid rgba(255,255,255,.08);
+}
+.cd-num {
+  font-family:'JetBrains Mono', monospace;
+  font-size:clamp(36px, 4.2vw, 48px); font-weight:700;
+  color:#fff; line-height:1; letter-spacing:-.03em;
+  font-variant-numeric:tabular-nums;
+  animation: numCountUp .8s ease both 3.8s;
+}
+.cd-cell:nth-child(2) .cd-num { animation-delay:3.95s; }
+.cd-cell:nth-child(3) .cd-num { animation-delay:4.1s; }
+.cd-cell:nth-child(4) .cd-num { animation-delay:4.25s; }
+.cd-label {
+  font-family:'JetBrains Mono', monospace;
+  font-size:9px; letter-spacing:.22em; text-transform:uppercase;
+  color:rgba(255,255,255,.55); margin-top:12px;
+}
+
+/* ── CSK Calendar ──────────────────────────────────────────────── */
+.cal-section {
+  max-width:1440px; margin:0 auto;
+  padding:48px 36px 0;
+  animation: fadeUpSlow 1s ease both 3.5s;
+}
+.cal-head {
+  display:flex; align-items:baseline; justify-content:space-between; margin-bottom:20px;
+}
+.cal-title {
+  font-family:'Chakra Petch', serif;
+  font-size:28px; font-weight:500; letter-spacing:-.015em; color:var(--ink);
+}
+.cal-title em { font-style:italic; color:var(--csk); font-weight:700; }
+.cal-meta {
+  font-family:'JetBrains Mono', monospace;
+  font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:var(--ink-3); font-weight:500;
+}
+.cal-strip-wrap {
+  position:relative; overflow:hidden;
+  border:2px solid var(--ink); background:var(--paper-2);
+}
+.cal-progress-track {
+  position:absolute; top:0; left:0; right:0; height:3px; background:rgba(0,0,0,.08); z-index:3;
+}
+.cal-progress-fill {
+  height:100%;
+  background:linear-gradient(90deg, var(--racing), var(--csk));
+  transform:scaleX(0); transform-origin:left;
+  animation: barGrowSlow 1.6s cubic-bezier(.3,.9,.3,1) both 4.2s;
+}
+.cal-strip {
+  display:grid; grid-auto-flow:column; grid-auto-columns:minmax(132px,1fr);
+  overflow-x:auto; scrollbar-width:thin;
+}
+.cal-strip::-webkit-scrollbar { height:4px; }
+.cal-strip::-webkit-scrollbar-thumb { background:var(--ink); }
+.cal-round {
+  padding:20px 16px 18px; border-right:1px solid var(--rule-light);
+  position:relative; background:var(--paper);
+  transition:background .25s;
+  min-height:148px; display:flex; flex-direction:column; cursor:default;
+}
+.cal-round:hover { background:var(--paper-3); }
+.cal-round:last-child { border-right:none; }
+.cal-round.done { background:var(--paper-2); }
+.cal-round.done .cal-opp { color:var(--ink-2); }
+.cal-round.won  { border-left:3px solid var(--csk); }
+.cal-round.lost { border-left:3px solid var(--racing); }
+.cal-round.next { background:var(--carbon); color:#fff; }
+.cal-round.next .cal-rnum { color:var(--csk); font-weight:700; }
+.cal-round.next .cal-venue { color:rgba(255,255,255,.55); }
+.cal-round.next .cal-opp  { color:#fff; }
+.cal-round.next .cal-date { color:rgba(255,255,255,.75); }
+.cal-rnum {
+  font-family:'JetBrains Mono', monospace;
+  font-size:10px; letter-spacing:.14em; color:var(--ink-3); margin-bottom:12px;
+  font-weight:600; display:flex; align-items:center; justify-content:space-between;
+}
+.cal-status-dot { width:8px; height:8px; border-radius:50%; background:var(--gold); display:inline-block; }
+.cal-round:not(.done):not(.next) .cal-status-dot { display:none; }
+.cal-round.next .cal-status-dot { background:var(--csk); animation:pulseDot 1.6s ease infinite; }
+.cal-result-badge {
+  display:inline-block; padding:2px 6px;
+  font-family:'JetBrains Mono', monospace; font-size:9px; font-weight:700; letter-spacing:.1em;
+  color:#000; margin-bottom:6px; align-self:flex-start;
+}
+.won  .cal-result-badge { background:var(--csk); }
+.lost .cal-result-badge { background:var(--racing); color:#fff; }
+.cal-venue {
+  font-family:'JetBrains Mono', monospace; font-size:9px;
+  color:var(--ink-3); letter-spacing:.14em; text-transform:uppercase;
+  margin-bottom:4px; font-weight:500;
+}
+.cal-opp {
+  font-family:'Chakra Petch', serif; font-size:17px; font-weight:500;
+  color:var(--ink); letter-spacing:-.01em; line-height:1.1; margin-bottom:auto;
+}
+.cal-date {
+  font-family:'JetBrains Mono', monospace; font-size:11px;
+  color:var(--ink-2); letter-spacing:.04em; margin-top:14px; font-weight:500;
+}
+
+/* ── Main 3-col Grid ───────────────────────────────────────────── */
+.main-section {
+  max-width:1440px; margin:0 auto; padding:56px 36px 0;
+}
+.main-grid {
+  display:grid; grid-template-columns:1.1fr 1fr 1fr;
+  border:2px solid var(--ink); background:var(--paper);
+}
+.col { border-right:1px solid var(--rule-light); display:flex; flex-direction:column; }
+.col:last-child { border-right:none; }
+.col-head {
+  padding:22px 24px 20px; border-bottom:2px solid var(--ink);
+  background:var(--paper); position:sticky; top:0; z-index:5;
+}
+.col-num { font-family:'JetBrains Mono', monospace; font-size:9px; color:var(--ink-3); letter-spacing:.18em; margin-bottom:7px; font-weight:500; }
+.col-name { font-family:'Chakra Petch', serif; font-size:24px; font-weight:700; letter-spacing:-.015em; color:var(--ink); line-height:1; }
+.col-name em { font-style:italic; color:var(--csk); font-weight:500; }
+.col-sub { font-family:'JetBrains Mono', monospace; font-size:9px; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-3); margin-top:9px; }
+
+/* Points Table rows */
+.pt-row {
+  display:grid; grid-template-columns:26px 1fr auto auto;
+  align-items:center; gap:10px;
+  padding:13px 24px; border-bottom:1px solid var(--rule-light);
+  position:relative; transition:background .2s, transform .2s;
+  opacity:0; animation:rowSlide .6s cubic-bezier(.25,.9,.3,1) both;
+}
+.pt-row::before {
+  content:''; position:absolute; left:0; top:0; bottom:0;
+  width:4px; background:var(--team-color, var(--ink-3));
+}
+.pt-row:hover { background:var(--paper-2); transform:translateX(3px); }
+.pt-row.leader { background:linear-gradient(90deg, rgba(249,193,16,.09) 0%, transparent 60%); }
+.pt-row.fav {
+  background:rgba(249,193,16,.07);
+  border-right:2px solid var(--csk);
+  box-shadow:inset -4px 0 16px rgba(249,193,16,.12);
+}
+.pt-row.fav .pt-team-name { color:var(--csk); font-weight:700; }
+.pt-pos { font-family:'JetBrains Mono', monospace; font-size:13px; font-weight:700; color:var(--ink-2); font-variant-numeric:tabular-nums; }
+.pt-team-info { display:flex; flex-direction:column; }
+.pt-team-name { font-family:'Chakra Petch', serif; font-size:15px; font-weight:500; color:var(--ink); letter-spacing:-.01em; line-height:1.2; }
+.pt-record { font-family:'JetBrains Mono', monospace; font-size:10px; color:var(--ink-3); margin-top:2px; }
+.pt-nrr { font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--ink-2); font-weight:500; text-align:right; }
+.pt-pts-wrap { text-align:right; }
+.pt-pts { font-family:'JetBrains Mono', monospace; font-size:18px; font-weight:700; color:var(--ink); font-variant-numeric:tabular-nums; line-height:1; }
+.pt-pts-sub { font-family:'JetBrains Mono', monospace; font-size:8px; color:var(--ink-3); letter-spacing:.12em; text-transform:uppercase; margin-top:2px; }
+
+/* Cap leader rows */
+.cap-section { padding:0; }
+.cap-head {
+  padding:16px 24px 12px; border-bottom:1px solid var(--rule-light);
+  display:flex; align-items:center; gap:10px;
+}
+.cap-badge {
+  font-family:'JetBrains Mono', monospace; font-size:9px; font-weight:700;
+  letter-spacing:.16em; text-transform:uppercase; padding:4px 9px; color:#000;
+}
+.cap-badge.orange { background:var(--t-srh); color:#fff; }
+.cap-badge.purple { background:#7c3aed; }
+.cap-head-label { font-family:'JetBrains Mono', monospace; font-size:10px; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-3); }
+.cap-row {
+  display:grid; grid-template-columns:22px 1fr auto;
+  align-items:center; gap:10px;
+  padding:12px 24px; border-bottom:1px solid var(--rule-light);
+  position:relative; transition:background .2s;
+  opacity:0; animation:rowSlide .6s cubic-bezier(.25,.9,.3,1) both;
+}
+.cap-row::before {
+  content:''; position:absolute; left:0; top:0; bottom:0;
+  width:3px; background:var(--team-color, var(--ink-3));
+}
+.cap-row:hover { background:var(--paper-2); }
+.cap-pos { font-family:'JetBrains Mono', monospace; font-size:11px; font-weight:700; color:var(--ink-3); }
+.cap-info { display:flex; flex-direction:column; }
+.cap-name { font-family:'Chakra Petch', serif; font-size:14px; font-weight:500; color:var(--ink); letter-spacing:-.01em; }
+.cap-team { font-size:10px; color:var(--ink-3); margin-top:2px; }
+.cap-stat { font-family:'JetBrains Mono', monospace; font-size:16px; font-weight:700; color:var(--ink); font-variant-numeric:tabular-nums; }
+
+/* Last Match / Scorecard */
+.scorecard-block { padding:22px 24px; border-bottom:1px solid var(--rule-light); }
+.scorecard-head {
+  font-family:'JetBrains Mono', monospace; font-size:10px; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--ink-3); margin-bottom:14px; font-weight:500;
+}
+.scorecard-teams { display:flex; flex-direction:column; gap:8px; }
+.sc-team {
+  display:grid; grid-template-columns:1fr auto; align-items:center;
+  gap:10px; padding:12px 14px; position:relative;
+}
+.sc-team.winner { background:linear-gradient(90deg, rgba(249,193,16,.10), transparent); }
+.sc-team.loser  { background:linear-gradient(90deg, rgba(192,57,43,.08), transparent); }
+.sc-team-name { font-family:'Chakra Petch', serif; font-size:16px; font-weight:500; color:var(--ink); }
+.sc-team-name small { font-size:11px; color:var(--ink-3); font-family:'JetBrains Mono',monospace; margin-left:6px; }
+.sc-score {
+  font-family:'JetBrains Mono', monospace; font-size:17px; font-weight:700; color:var(--ink);
+  font-variant-numeric:tabular-nums;
+}
+.sc-result {
+  font-family:'JetBrains Mono', monospace; font-size:10px; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--csk); margin-top:10px; font-weight:600; padding:0 14px;
+}
+
+/* News block */
+.news-block { padding:0; }
+.news-item {
+  padding:16px 24px; border-bottom:1px solid var(--rule-light);
+  position:relative; transition:background .2s, padding-left .2s;
+}
+.news-item:last-child { border-bottom:none; }
+.news-item::before { content:''; position:absolute; left:0; top:0; bottom:0; width:0; background:var(--csk); transition:width .25s; }
+.news-item:hover { background:var(--paper-2); padding-left:28px; }
+.news-item:hover::before { width:4px; }
+.news-meta { display:flex; align-items:center; justify-content:space-between; margin-bottom:9px; }
+.news-kicker {
+  font-family:'JetBrains Mono', monospace; font-size:8px; letter-spacing:.18em;
+  text-transform:uppercase; padding:3px 7px; background:var(--racing); color:#fff; font-weight:600;
+}
+.news-item.csk-news .news-kicker { background:var(--csk); color:#000; }
+.news-item.neutral .news-kicker { background:var(--ink); color:var(--paper); }
+.news-num { font-family:'JetBrains Mono', monospace; font-size:9px; color:var(--ink-3); font-weight:500; }
+.news-headline { font-family:'Chakra Petch', serif; font-size:15px; font-weight:500; line-height:1.35; color:var(--ink); letter-spacing:-.01em; margin-bottom:7px; }
+.news-item.lead .news-headline { font-size:17px; font-weight:700; }
+.news-body { font-size:12px; line-height:1.6; color:var(--ink-2); }
+
+/* ── Stats Ribbon ──────────────────────────────────────────────── */
+.stats-ribbon { max-width:1440px; margin:0 auto; padding:48px 36px 0; }
+.stats-grid {
+  display:grid; grid-template-columns:repeat(4,1fr);
+  border:2px solid var(--ink); background:var(--carbon);
+}
+.stat {
+  padding:28px 24px 24px; border-right:1px solid rgba(255,255,255,.1);
+  color:#fff; position:relative; overflow:hidden; transition:background .3s;
+}
+.stat:last-child { border-right:none; }
+.stat:hover { background:var(--carbon-2); }
+.stat::after { content:''; position:absolute; bottom:0; left:0; height:3px; width:0; background:var(--csk); transition:width .5s ease; }
+.stat:hover::after { width:100%; }
+.stat-label { font-family:'JetBrains Mono', monospace; font-size:9px; letter-spacing:.22em; text-transform:uppercase; color:rgba(255,255,255,.55); margin-bottom:13px; }
+.stat-big { font-family:'Chakra Petch', serif; font-size:clamp(28px, 3vw, 38px); font-weight:700; color:#fff; line-height:1; letter-spacing:-.02em; margin-bottom:9px; }
+.stat-big em { font-style:italic; color:var(--csk); font-weight:500; }
+.stat-sub { font-family:'Inter', sans-serif; font-size:12px; color:rgba(255,255,255,.58); font-weight:400; }
+
+/* ── Footer ────────────────────────────────────────────────────── */
+.footer-wrap { max-width:1440px; margin:0 auto; padding:32px 36px 40px; }
+.footer { border-top:1px solid var(--ink); padding-top:22px; display:flex; justify-content:space-between; align-items:center; }
+.f-note { font-family:'JetBrains Mono', monospace; font-size:9px; color:var(--ink-3); letter-spacing:.18em; text-transform:uppercase; }
+.f-dot { display:inline-block; width:4px; height:4px; background:var(--csk); vertical-align:middle; margin:0 8px; border-radius:50%; position:relative; top:-2px; }
+.f-brand { font-family:'Chakra Petch', serif; font-size:15px; font-style:italic; color:var(--ink-2); }
+.f-brand em { color:var(--csk); font-weight:500; }
+
+/* ── API Setup Overlay ─────────────────────────────────────────── */
+.setup-overlay {
+  position:fixed; inset:0; z-index:999;
+  background:rgba(2,3,5,.94);
+  display:flex; align-items:center; justify-content:center;
+  backdrop-filter:blur(6px);
+  animation:fadeSlow .4s ease both;
+}
+.setup-overlay.hidden { display:none; }
+.setup-box {
+  background:var(--carbon-3);
+  border:2px solid var(--csk);
+  padding:44px 48px;
+  max-width:520px; width:90%;
+  box-shadow:0 0 60px rgba(249,193,16,.2);
+}
+.setup-title {
+  font-family:'Chakra Petch', serif;
+  font-size:26px; font-weight:700; color:var(--ink);
+  margin-bottom:6px;
+}
+.setup-title em { font-style:italic; color:var(--csk); }
+.setup-desc {
+  font-size:13px; color:var(--ink-3); line-height:1.7; margin-bottom:28px;
+}
+.setup-desc a { color:var(--csk); text-decoration:none; font-weight:600; }
+.setup-desc a:hover { text-decoration:underline; }
+.setup-steps {
+  font-family:'JetBrains Mono', monospace; font-size:11px;
+  color:var(--ink-2); line-height:2; margin-bottom:24px; letter-spacing:.03em;
+}
+.setup-input-wrap { display:flex; gap:10px; margin-bottom:14px; }
+.setup-input {
+  flex:1; background:var(--paper-3); border:1px solid var(--rule-light);
+  color:var(--ink); font-family:'JetBrains Mono', monospace; font-size:13px;
+  padding:12px 14px; outline:none; letter-spacing:.04em;
+  transition:border-color .2s;
+}
+.setup-input:focus { border-color:var(--csk); }
+.setup-input::placeholder { color:var(--ink-3); }
+.setup-btn {
+  background:var(--csk); color:#000; border:none; cursor:pointer;
+  font-family:'JetBrains Mono', monospace; font-size:12px; font-weight:700;
+  letter-spacing:.16em; text-transform:uppercase; padding:12px 20px;
+  transition:opacity .2s; white-space:nowrap;
+}
+.setup-btn:hover { opacity:.85; }
+.setup-error {
+  font-family:'JetBrains Mono', monospace; font-size:11px;
+  color:var(--racing-hot); letter-spacing:.06em; min-height:18px;
+}
+.setup-note {
+  font-family:'JetBrains Mono', monospace; font-size:10px;
+  color:var(--ink-3); letter-spacing:.1em; margin-top:18px;
+  padding-top:18px; border-top:1px solid var(--rule-light);
+}
+
+/* ── Live / Refresh UI ─────────────────────────────────────────── */
+.refresh-btn {
+  display:inline-flex; align-items:center; gap:8px;
+  background:transparent; border:1px solid var(--ink);
+  color:var(--ink-2); cursor:pointer;
+  font-family:'JetBrains Mono', monospace; font-size:10px;
+  font-weight:600; letter-spacing:.18em; text-transform:uppercase;
+  padding:7px 14px; transition:border-color .2s, color .2s;
+}
+.refresh-btn:hover { border-color:var(--csk); color:var(--csk); }
+.refresh-btn.spinning svg { animation:spin .8s linear infinite; }
+@keyframes spin { to { transform:rotate(360deg); } }
+.api-status {
+  font-family:'JetBrains Mono', monospace; font-size:10px;
+  letter-spacing:.14em; color:var(--ink-3); display:flex; align-items:center; gap:8px;
+}
+.api-status .dot { width:6px; height:6px; border-radius:50%; background:var(--ink-3); flex-shrink:0; }
+.api-status.ok .dot { background:#22c55e; animation:pulseDot 2s ease infinite; }
+.api-status.live .dot { background:var(--csk); animation:pulseDot 1s ease infinite; }
+.api-status.err .dot { background:var(--racing-hot); }
+
+/* ── Live Score Banner ─────────────────────────────────────────── */
+.live-banner {
+  display:none;
+  background:linear-gradient(135deg, rgba(249,193,16,.12) 0%, rgba(249,193,16,.04) 100%);
+  border:1px solid rgba(249,193,16,.4);
+  border-left:4px solid var(--csk);
+  margin:0 36px 0; padding:18px 24px;
+  font-family:'JetBrains Mono', monospace;
+}
+.live-banner.visible { display:block; }
+.live-banner-head {
+  font-size:9px; letter-spacing:.2em; color:var(--csk);
+  text-transform:uppercase; font-weight:700; margin-bottom:10px;
+  display:flex; align-items:center; gap:8px;
+}
+.live-banner-head::before {
+  content:''; width:7px; height:7px; border-radius:50%;
+  background:var(--csk); animation:pulseDot 1s ease infinite;
+}
+.live-score-row { display:flex; justify-content:space-between; align-items:baseline; gap:16px; flex-wrap:wrap; }
+.live-team { font-size:18px; font-weight:700; color:#fff; letter-spacing:-.01em; }
+.live-score-val { font-size:22px; font-weight:700; color:var(--csk); font-variant-numeric:tabular-nums; }
+.live-status { font-size:11px; color:var(--ink-2); margin-top:8px; letter-spacing:.04em; }
+@media(max-width:980px){.live-banner{margin:0 20px;}}
+
+@media (max-width:980px) {
+  .hero,.match-hero,.cal-section,.main-section,.stats-ribbon,.footer-wrap { padding-left:20px; padding-right:20px; }
+  .hero { padding-top:36px; }
+  .hero-top { flex-direction:column; gap:18px; align-items:flex-start; }
+  .brand-right { text-align:left; }
+  .hero-title .line1, .hero-title .line2 { font-size:clamp(46px, 14vw, 84px); }
+  .match-block { padding:30px 24px 32px; }
+  .match-grid { grid-template-columns:1fr; gap:32px; }
+  .match-name { font-size:clamp(34px, 8vw, 52px); }
+  .main-grid { grid-template-columns:1fr; }
+  .col { border-right:none; border-bottom:1px solid var(--rule-light); }
+  .col:last-child { border-bottom:none; }
+  .col-head { position:relative; top:auto; }
+  .stats-grid { grid-template-columns:1fr 1fr; }
+  .stat:nth-child(2) { border-right:none; }
+  .stat:nth-child(3),.stat:nth-child(4) { border-top:1px solid rgba(255,255,255,.1); }
+  .stat:nth-child(4) { border-right:none; }
+  .hero-sub { flex-direction:column; align-items:flex-start; gap:14px; }
+  .pt-row { grid-template-columns:22px 1fr auto; }
+  .pt-nrr { display:none; }
+}
+@media (max-width:540px) {
+  .cd-num { font-size:32px; }
+  .countdown { gap:6px; }
+  .cd-cell { padding:16px 6px 12px; }
+  .pt-pts { font-size:15px; }
+  .cap-stat { font-size:14px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══ SETUP OVERLAY ════════════════════════════════════════════════════════ -->
+<div class="setup-overlay" id="setupOverlay">
+  <div class="setup-box">
+    <div class="setup-title">Connect <em>Live Data</em></div>
+    <p class="setup-desc">
+      This dashboard pulls live IPL scores and the points table from
+      <a href="https://cricapi.com" target="_blank">cricapi.com</a>.
+      The free tier gives you <strong>100 requests/day</strong> — plenty for a personal dashboard.
+    </p>
+    <div class="setup-steps">
+      1 · Go to cricapi.com → Sign Up (free)<br>
+      2 · Copy your API key from the dashboard<br>
+      3 · Paste it below and hit Connect
+    </div>
+    <div class="setup-input-wrap">
+      <input class="setup-input" id="apiKeyInput" type="text" placeholder="Paste your cricapi key here…" autocomplete="off" spellcheck="false">
+      <button class="setup-btn" id="connectBtn">Connect</button>
+    </div>
+    <div class="setup-error" id="setupError"></div>
+    <div class="setup-note">Your key is saved in this browser only. Never shared.</div>
+  </div>
+</div>
+
+<!-- ══ TICKER ══════════════════════════════════════════════════════════════ -->
+<div class="ticker-wrap">
+  <div class="ticker-track">
+    <span class="tick"><span class="sym c">TABLE LEADERS</span> <span class="val">PUNJAB KINGS</span> <span class="pts">11 PTS</span></span><span class="tick tick-dot">◆</span>
+    <span class="tick"><span class="sym">ORANGE CAP</span> <span class="val">H. KLAASEN</span> <span class="pts">283 runs</span></span><span class="tick tick-dot">◆</span>
+    <span class="tick"><span class="sym c">PURPLE CAP</span> <span class="val">A. KAMBOJ</span> <span class="pts">13 wkts · CSK!</span></span><span class="tick tick-dot">◆</span>
+    <span class="tick"><span class="sym c">CSK</span> <span class="val">P7 · 4 PTS</span> <span class="pts">2W 4L</span></span><span class="tick tick-dot">◆</span>
+    <span class="tick"><span class="sym">LAST RESULT</span> <span class="val">SRH beat CSK</span> <span class="pts">by 10 runs</span></span><span class="tick tick-dot">◆</span>
+    <span class="tick"><span class="sym c">NEXT CSK</span> <span class="val">vs MI · APR 23</span> <span class="pts">Wankhede</span></span><span class="tick tick-dot">◆</span>
+    <span class="tick"><span class="sym">DHONI</span> <span class="val">RECOVERING</span> <span class="pts">return TBC</span></span><span class="tick tick-dot">◆</span>
+    <span class="tick"><span class="sym c">TABLE LEADERS</span> <span class="val">PUNJAB KINGS</span> <span class="pts">11 PTS</span></span><span class="tick tick-dot">◆</span>
+    <span class="tick"><span class="sym">ORANGE CAP</span> <span class="val">H. KLAASEN</span> <span class="pts">283 runs</span></span><span class="tick tick-dot">◆</span>
+    <span class="tick"><span class="sym c">PURPLE CAP</span> <span class="val">A. KAMBOJ</span> <span class="pts">13 wkts · CSK!</span></span><span class="tick tick-dot">◆</span>
+    <span class="tick"><span class="sym c">CSK</span> <span class="val">P7 · 4 PTS</span> <span class="pts">2W 4L</span></span><span class="tick tick-dot">◆</span>
+    <span class="tick"><span class="sym">LAST RESULT</span> <span class="val">SRH beat CSK</span> <span class="pts">by 10 runs</span></span><span class="tick tick-dot">◆</span>
+    <span class="tick"><span class="sym c">NEXT CSK</span> <span class="val">vs MI · APR 23</span> <span class="pts">Wankhede</span></span><span class="tick tick-dot">◆</span>
+    <span class="tick"><span class="sym">DHONI</span> <span class="val">RECOVERING</span> <span class="pts">return TBC</span></span><span class="tick tick-dot">◆</span>
+  </div>
+</div>
+
+<!-- ══ HERO ════════════════════════════════════════════════════════════════ -->
+<section class="hero">
+  <span class="speed-line"></span>
+  <span class="speed-line"></span>
+  <span class="speed-line"></span>
+
+  <div class="hero-top">
+    <div class="brand-eyebrow">
+      <span class="cricket-icon">🏏</span>
+      <span>Personal Edition · IPL 2026</span>
+    </div>
+    <div class="brand-right">
+      <!-- ✏️ Replace Esther below -->
+      <div class="greeting" id="greeting">Good morning, Esther</div>
+      <div class="dateline" id="dateline"></div>
+    </div>
+  </div>
+
+  <div class="title-wrap">
+    <h1 class="hero-title">
+      <!-- ✏️ Replace Esther below -->
+      <span class="line1"><span>Esther's</span></span>
+      <span class="line2"><span>Dugout.</span></span>
+    </h1>
+    <div class="title-underline"></div>
+  </div>
+
+  <div class="hero-sub">
+    <span class="live-badge">Live Edition</span>
+    <div style="display:flex;align-items:center;gap:18px;flex-wrap:wrap;">
+      <span class="api-status" id="apiStatus"><span class="dot"></span><span id="apiStatusText">Not connected</span></span>
+      <button class="refresh-btn" id="refreshBtn" onclick="window.__dugout.refresh()">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+        Refresh
+      </button>
+      <button class="refresh-btn" id="changeKeyBtn" onclick="window.__dugout.showSetup()" style="border-color:var(--rule-light);color:var(--ink-3);">
+        ⚙ API Key
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ══ NEXT MATCH ══════════════════════════════════════════════════════════ -->
+<section class="match-hero">
+  <div class="match-block">
+    <div class="match-grid">
+
+      <div class="match-left">
+        <div class="match-meta-row">
+          <span class="match-round">◆ Match 33 · Up Next</span>
+          <span class="match-flag-big">🏟️</span>
+        </div>
+        <h2 class="match-name">MI vs <em>CSK</em></h2>
+        <div class="match-venue"><strong>Wankhede Stadium</strong> · Mumbai</div>
+        <div class="match-venue">El Clásico of IPL · T20 · 20 overs</div>
+        <div class="match-stats">
+          <div class="match-stat">
+            <div class="match-stat-label">CSK Away Form</div>
+            <div class="match-stat-val">0W 3L</div>
+          </div>
+          <div class="match-stat">
+            <div class="match-stat-label">Top CSK batter</div>
+            <div class="match-stat-val">A. Mhatre</div>
+          </div>
+          <div class="match-stat">
+            <div class="match-stat-label">Date</div>
+            <div class="match-stat-val">Apr 23, 7:30 PM</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="match-right">
+        <div class="countdown-label">Ball One In</div>
+        <div class="countdown">
+          <div class="cd-cell"><div class="cd-num" id="cd-d">00</div><div class="cd-label">Days</div></div>
+          <div class="cd-cell"><div class="cd-num" id="cd-h">00</div><div class="cd-label">Hours</div></div>
+          <div class="cd-cell"><div class="cd-num" id="cd-m">00</div><div class="cd-label">Mins</div></div>
+          <div class="cd-cell"><div class="cd-num" id="cd-s">00</div><div class="cd-label">Secs</div></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══ LIVE SCORE BANNER (shown when CSK is playing) ═══════════════════════ -->
+<div class="live-banner" id="liveBanner">
+  <div class="live-banner-head">CSK · Live Now</div>
+  <div class="live-score-row">
+    <span class="live-team" id="liveTeam1">—</span>
+    <span class="live-score-val" id="liveScore1">—</span>
+  </div>
+  <div class="live-score-row" style="margin-top:6px;">
+    <span class="live-team" id="liveTeam2">—</span>
+    <span class="live-score-val" id="liveScore2">—</span>
+  </div>
+  <div class="live-status" id="liveStatus"></div>
+</div>
+
+<!-- ══ CSK SCHEDULE STRIP ═══════════════════════════════════════════════════ -->
+<section class="cal-section">
+  <div class="cal-head">
+    <div class="cal-title">CSK <em>Schedule</em></div>
+    <div class="cal-meta">14 Fixtures · Mar 30 → May 21, 2026 · 6 played</div>
+  </div>
+
+  <div class="cal-strip-wrap">
+    <div class="cal-progress-track">
+      <!-- 6 of 14 done = 42.9% -->
+      <div class="cal-progress-fill" style="width:42.9%;"></div>
+    </div>
+    <div class="cal-strip">
+
+      <!-- M03 -->
+      <div class="cal-round done lost">
+        <div class="cal-rnum">M03<span class="cal-status-dot"></span></div>
+        <div class="cal-result-badge">LOSS</div>
+        <div class="cal-venue">Guwahati</div>
+        <div class="cal-opp">RR</div>
+        <div class="cal-date">Mar 30</div>
+      </div>
+
+      <!-- M07 -->
+      <div class="cal-round done lost">
+        <div class="cal-rnum">M07<span class="cal-status-dot"></span></div>
+        <div class="cal-result-badge">LOSS</div>
+        <div class="cal-venue">Chennai</div>
+        <div class="cal-opp">PBKS</div>
+        <div class="cal-date">Apr 3</div>
+      </div>
+
+      <!-- M11 -->
+      <div class="cal-round done lost">
+        <div class="cal-rnum">M11<span class="cal-status-dot"></span></div>
+        <div class="cal-result-badge">LOSS</div>
+        <div class="cal-venue">Bengaluru</div>
+        <div class="cal-opp">RCB</div>
+        <div class="cal-date">Apr 5 · 43 runs</div>
+      </div>
+
+      <!-- M18 -->
+      <div class="cal-round done won">
+        <div class="cal-rnum">M18<span class="cal-status-dot"></span></div>
+        <div class="cal-result-badge">WIN</div>
+        <div class="cal-venue">Chennai</div>
+        <div class="cal-opp">DC</div>
+        <div class="cal-date">Apr 11</div>
+      </div>
+
+      <!-- M22 -->
+      <div class="cal-round done won">
+        <div class="cal-rnum">M22<span class="cal-status-dot"></span></div>
+        <div class="cal-result-badge">WIN</div>
+        <div class="cal-venue">Chennai</div>
+        <div class="cal-opp">KKR</div>
+        <div class="cal-date">Apr 14 · 32 runs</div>
+      </div>
+
+      <!-- M27 -->
+      <div class="cal-round done lost">
+        <div class="cal-rnum">M27<span class="cal-status-dot"></span></div>
+        <div class="cal-result-badge">LOSS</div>
+        <div class="cal-venue">Hyderabad</div>
+        <div class="cal-opp">SRH</div>
+        <div class="cal-date">Apr 18 · 10 runs</div>
+      </div>
+
+      <!-- M33 — NEXT -->
+      <div class="cal-round next">
+        <div class="cal-rnum">M33 · NEXT<span class="cal-status-dot"></span></div>
+        <div class="cal-venue">Mumbai</div>
+        <div class="cal-opp">MI</div>
+        <div class="cal-date">Apr 23 · 7:30 PM</div>
+      </div>
+
+      <!-- M37 -->
+      <div class="cal-round">
+        <div class="cal-rnum">M37<span class="cal-status-dot"></span></div>
+        <div class="cal-venue">Chennai</div>
+        <div class="cal-opp">GT</div>
+        <div class="cal-date">Apr 26</div>
+      </div>
+
+      <!-- M44 -->
+      <div class="cal-round">
+        <div class="cal-rnum">M44<span class="cal-status-dot"></span></div>
+        <div class="cal-venue">Chennai</div>
+        <div class="cal-opp">MI</div>
+        <div class="cal-date">May 2</div>
+      </div>
+
+      <!-- M~~ -->
+      <div class="cal-round">
+        <div class="cal-rnum">M~~<span class="cal-status-dot"></span></div>
+        <div class="cal-venue">Chennai</div>
+        <div class="cal-opp">LSG</div>
+        <div class="cal-date">May 7</div>
+      </div>
+
+      <!-- M~~ -->
+      <div class="cal-round">
+        <div class="cal-rnum">M~~<span class="cal-status-dot"></span></div>
+        <div class="cal-venue">Delhi</div>
+        <div class="cal-opp">DC</div>
+        <div class="cal-date">May 11</div>
+      </div>
+
+      <!-- M~~ -->
+      <div class="cal-round">
+        <div class="cal-rnum">M~~<span class="cal-status-dot"></span></div>
+        <div class="cal-venue">Lucknow</div>
+        <div class="cal-opp">LSG</div>
+        <div class="cal-date">May 15</div>
+      </div>
+
+      <!-- M~~ -->
+      <div class="cal-round">
+        <div class="cal-rnum">M~~<span class="cal-status-dot"></span></div>
+        <div class="cal-venue">Chennai</div>
+        <div class="cal-opp">SRH</div>
+        <div class="cal-date">May 18</div>
+      </div>
+
+      <!-- M~~ confirmed Ahmedabad -->
+      <div class="cal-round">
+        <div class="cal-rnum">M~~<span class="cal-status-dot"></span></div>
+        <div class="cal-venue">Ahmedabad</div>
+        <div class="cal-opp">GT</div>
+        <div class="cal-date">May 21</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══ MAIN 3-COL GRID ══════════════════════════════════════════════════════ -->
+<section class="main-section">
+  <div class="main-grid">
+
+    <!-- Col 1: Points Table -->
+    <div class="col">
+      <div class="col-head">
+        <div class="col-num">§ 01</div>
+        <div class="col-name">Points <em>Table</em></div>
+        <div class="col-sub">All 10 Teams · After ~27 Matches</div>
+      </div>
+
+      <!-- 1 PBKS -->
+      <div class="pt-row leader" style="--team-color:var(--t-pbks); animation-delay:4.5s;">
+        <div class="pt-pos">01</div>
+        <div class="pt-team-info">
+          <div class="pt-team-name">Punjab Kings</div>
+          <div class="pt-record">6M · 5W · 0L · 1NR · Unbeaten</div>
+        </div>
+        <div class="pt-nrr">+2.14</div>
+        <div class="pt-pts-wrap"><div class="pt-pts">11</div><div class="pt-pts-sub">pts</div></div>
+      </div>
+
+      <!-- 2 RCB -->
+      <div class="pt-row" style="--team-color:var(--t-rcb); animation-delay:4.58s;">
+        <div class="pt-pos">02</div>
+        <div class="pt-team-info">
+          <div class="pt-team-name">Royal Challengers</div>
+          <div class="pt-record">5M · 4W · 1L · Champions</div>
+        </div>
+        <div class="pt-nrr">+1.56</div>
+        <div class="pt-pts-wrap"><div class="pt-pts">8</div><div class="pt-pts-sub">pts</div></div>
+      </div>
+
+      <!-- 3 RR -->
+      <div class="pt-row" style="--team-color:var(--t-rr); animation-delay:4.66s;">
+        <div class="pt-pos">03</div>
+        <div class="pt-team-info">
+          <div class="pt-team-name">Rajasthan Royals</div>
+          <div class="pt-record">6M · 4W · 2L</div>
+        </div>
+        <div class="pt-nrr">+0.54</div>
+        <div class="pt-pts-wrap"><div class="pt-pts">8</div><div class="pt-pts-sub">pts</div></div>
+      </div>
+
+      <!-- 4 SRH -->
+      <div class="pt-row" style="--team-color:var(--t-srh); animation-delay:4.74s;">
+        <div class="pt-pos">04</div>
+        <div class="pt-team-info">
+          <div class="pt-team-name">Sunrisers Hyderabad</div>
+          <div class="pt-record">5M · 3W · 2L</div>
+        </div>
+        <div class="pt-nrr">+0.44</div>
+        <div class="pt-pts-wrap"><div class="pt-pts">6</div><div class="pt-pts-sub">pts</div></div>
+      </div>
+
+      <!-- 5 DC -->
+      <div class="pt-row" style="--team-color:var(--t-dc); animation-delay:4.82s;">
+        <div class="pt-pos">05</div>
+        <div class="pt-team-info">
+          <div class="pt-team-name">Delhi Capitals</div>
+          <div class="pt-record">5M · 3W · 2L</div>
+        </div>
+        <div class="pt-nrr">+0.18</div>
+        <div class="pt-pts-wrap"><div class="pt-pts">6</div><div class="pt-pts-sub">pts</div></div>
+      </div>
+
+      <!-- 6 GT -->
+      <div class="pt-row" style="--team-color:var(--t-gt); animation-delay:4.90s;">
+        <div class="pt-pos">06</div>
+        <div class="pt-team-info">
+          <div class="pt-team-name">Gujarat Titans</div>
+          <div class="pt-record">5M · 3W · 2L</div>
+        </div>
+        <div class="pt-nrr">+0.28</div>
+        <div class="pt-pts-wrap"><div class="pt-pts">6</div><div class="pt-pts-sub">pts</div></div>
+      </div>
+
+      <!-- 7 CSK ← FAV -->
+      <div class="pt-row fav" style="--team-color:var(--t-csk); animation-delay:4.98s;">
+        <div class="pt-pos">07</div>
+        <div class="pt-team-info">
+          <div class="pt-team-name">Chennai Super Kings ★</div>
+          <div class="pt-record">6M · 2W · 4L · MSD return TBC</div>
+        </div>
+        <div class="pt-nrr">−0.35</div>
+        <div class="pt-pts-wrap"><div class="pt-pts">4</div><div class="pt-pts-sub">pts</div></div>
+      </div>
+
+      <!-- 8 LSG -->
+      <div class="pt-row" style="--team-color:var(--t-lsg); animation-delay:5.06s;">
+        <div class="pt-pos">08</div>
+        <div class="pt-team-info">
+          <div class="pt-team-name">Lucknow Super Giants</div>
+          <div class="pt-record">6M · 2W · 4L</div>
+        </div>
+        <div class="pt-nrr">−0.72</div>
+        <div class="pt-pts-wrap"><div class="pt-pts">4</div><div class="pt-pts-sub">pts</div></div>
+      </div>
+
+      <!-- 9 KKR -->
+      <div class="pt-row" style="--team-color:var(--t-kkr); animation-delay:5.14s;">
+        <div class="pt-pos">09</div>
+        <div class="pt-team-info">
+          <div class="pt-team-name">Kolkata Knight Riders</div>
+          <div class="pt-record">6M · 1W · 4L · 1NR</div>
+        </div>
+        <div class="pt-nrr">−0.96</div>
+        <div class="pt-pts-wrap"><div class="pt-pts">3</div><div class="pt-pts-sub">pts</div></div>
+      </div>
+
+      <!-- 10 MI -->
+      <div class="pt-row" style="--team-color:var(--t-mi); animation-delay:5.22s;">
+        <div class="pt-pos">10</div>
+        <div class="pt-team-info">
+          <div class="pt-team-name">Mumbai Indians</div>
+          <div class="pt-record">5M · 1W · 4L</div>
+        </div>
+        <div class="pt-nrr">−1.08</div>
+        <div class="pt-pts-wrap"><div class="pt-pts">2</div><div class="pt-pts-sub">pts</div></div>
+      </div>
+    </div>
+
+    <!-- Col 2: Cap Leaders -->
+    <div class="col">
+      <div class="col-head">
+        <div class="col-num">§ 02</div>
+        <div class="col-name">Cap <em>Leaders</em></div>
+        <div class="col-sub">Orange & Purple · Season 2026</div>
+      </div>
+
+      <!-- Orange Cap -->
+      <div class="cap-section">
+        <div class="cap-head">
+          <span class="cap-badge orange">Orange Cap</span>
+          <span class="cap-head-label">Top Run Scorers</span>
+        </div>
+
+        <div class="cap-row" style="--team-color:var(--t-srh); animation-delay:4.5s;">
+          <div class="cap-pos">1</div>
+          <div class="cap-info">
+            <div class="cap-name">H. Klaasen</div>
+            <div class="cap-team">Sunrisers Hyderabad</div>
+          </div>
+          <div class="cap-stat">283</div>
+        </div>
+
+        <div class="cap-row" style="--team-color:var(--t-gt); animation-delay:4.58s;">
+          <div class="cap-pos">2</div>
+          <div class="cap-info">
+            <div class="cap-name">Shubman Gill</div>
+            <div class="cap-team">Gujarat Titans</div>
+          </div>
+          <div class="cap-stat">251</div>
+        </div>
+
+        <div class="cap-row" style="--team-color:var(--t-rcb); animation-delay:4.66s;">
+          <div class="cap-pos">3</div>
+          <div class="cap-info">
+            <div class="cap-name">Virat Kohli</div>
+            <div class="cap-team">Royal Challengers</div>
+          </div>
+          <div class="cap-stat">247</div>
+        </div>
+
+        <div class="cap-row" style="--team-color:var(--t-rr); animation-delay:4.74s;">
+          <div class="cap-pos">4</div>
+          <div class="cap-info">
+            <div class="cap-name">V. Sooryavanshi</div>
+            <div class="cap-team">Rajasthan Royals</div>
+          </div>
+          <div class="cap-stat">246</div>
+        </div>
+
+        <div class="cap-row" style="--team-color:var(--t-rcb); animation-delay:4.82s;">
+          <div class="cap-pos">5</div>
+          <div class="cap-info">
+            <div class="cap-name">Rajat Patidar</div>
+            <div class="cap-team">Royal Challengers</div>
+          </div>
+          <div class="cap-stat">230</div>
+        </div>
+      </div>
+
+      <!-- Purple Cap -->
+      <div class="cap-section">
+        <div class="cap-head" style="margin-top:4px;">
+          <span class="cap-badge purple">Purple Cap</span>
+          <span class="cap-head-label">Top Wicket Takers</span>
+        </div>
+
+        <div class="cap-row" style="--team-color:var(--t-csk); animation-delay:4.9s;">
+          <div class="cap-pos">1</div>
+          <div class="cap-info">
+            <div class="cap-name">Anshul Kamboj ★</div>
+            <div class="cap-team">Chennai Super Kings</div>
+          </div>
+          <div class="cap-stat">13 wk</div>
+        </div>
+
+        <div class="cap-row" style="--team-color:var(--t-dc); animation-delay:4.98s;">
+          <div class="cap-pos">2</div>
+          <div class="cap-info">
+            <div class="cap-name">Prince Yadav</div>
+            <div class="cap-team">Delhi Capitals</div>
+          </div>
+          <div class="cap-stat">11 wk</div>
+        </div>
+
+        <div class="cap-row" style="--team-color:var(--t-rr); animation-delay:5.06s;">
+          <div class="cap-pos">3</div>
+          <div class="cap-info">
+            <div class="cap-name">Prasidh Krishna</div>
+            <div class="cap-team">Rajasthan Royals</div>
+          </div>
+          <div class="cap-stat">11 wk</div>
+        </div>
+
+        <div class="cap-row" style="--team-color:var(--t-pbks); animation-delay:5.14s;">
+          <div class="cap-pos">4</div>
+          <div class="cap-info">
+            <div class="cap-name">V. Vyshak</div>
+            <div class="cap-team">Punjab Kings</div>
+          </div>
+          <div class="cap-stat">9 wk</div>
+        </div>
+
+        <div class="cap-row" style="--team-color:var(--t-rr); animation-delay:5.22s;">
+          <div class="cap-pos">5</div>
+          <div class="cap-info">
+            <div class="cap-name">Ravi Bishnoi</div>
+            <div class="cap-team">Rajasthan Royals</div>
+          </div>
+          <div class="cap-stat">9 wk</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Col 3: Match Intel -->
+    <div class="col">
+      <div class="col-head">
+        <div class="col-num">§ 03</div>
+        <div class="col-name">Dugout <em>Intel</em></div>
+        <div class="col-sub">Last CSK Match · Paddock Buzz</div>
+      </div>
+
+      <!-- Last match scorecard -->
+      <div class="scorecard-block">
+        <div class="scorecard-head">SRH vs CSK · Apr 18 · Rajiv Gandhi Stadium</div>
+        <div class="scorecard-teams">
+          <div class="sc-team winner">
+            <div>
+              <div class="sc-team-name">SRH <small>Kishan 91(44) · Klaasen 59</small></div>
+            </div>
+            <div class="sc-score">194/6</div>
+          </div>
+          <div class="sc-team loser">
+            <div>
+              <div class="sc-team-name">CSK <small>Mhatre inj · Malinga 3wk</small></div>
+            </div>
+            <div class="sc-score">184/8</div>
+          </div>
+        </div>
+        <div class="sc-result">▲ SRH won by 10 runs</div>
+      </div>
+
+      <!-- News -->
+      <div class="news-block">
+        <article class="news-item lead csk-news">
+          <div class="news-meta"><span class="news-kicker">MSD Watch</span><span class="news-num">01</span></div>
+          <h3 class="news-headline">Dhoni sidelined — Sakshi, Ziva pray for captain's swift return</h3>
+          <p class="news-body">MS Dhoni is nursing an injury and is currently unavailable. Sightings at Shirdi temple hint at a comeback before the playoffs. Ruturaj Gaikwad leads CSK in the interim.</p>
+        </article>
+
+        <article class="news-item neutral">
+          <div class="news-meta"><span class="news-kicker">Table Talk</span><span class="news-num">02</span></div>
+          <h3 class="news-headline">PBKS at summit — Suryavanshi's 144 off 62 balls headlining IPL 2026</h3>
+          <p class="news-body">Punjab lead the table on NRR after four wins and a rain-affected no result. The 18-year-old phenom's strokeplay is rewriting T20 record books.</p>
+        </article>
+
+        <article class="news-item neutral">
+          <div class="news-meta"><span class="news-kicker">Defend</span><span class="news-num">03</span></div>
+          <h3 class="news-headline">RCB title defence on track — Rasikh Dar and Bhuvi bowl them to P2</h3>
+          <p class="news-body">The defending champions bounced back after their only loss, beating LSG and DC in quick succession. Kohli's form and NRR keep them just behind PBKS.</p>
+        </article>
+
+        <article class="news-item">
+          <div class="news-meta"><span class="news-kicker">Winless</span><span class="news-num">04</span></div>
+          <h3 class="news-headline">KKR yet to win — world's costliest overseas signing Green fires but can't carry side</h3>
+          <p class="news-body">Rahane's KKR remain bottom with one point from a washout. Cameron Green's counter-attacking bats can't compensate for fragile bowling. Playoffs look impossible after five games.</p>
+        </article>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ STATS RIBBON ══════════════════════════════════════════════════════════ -->
+<section class="stats-ribbon">
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="stat-label">IPL 2026 Leaders</div>
+      <div class="stat-big"><em>PBKS</em> · 11</div>
+      <div class="stat-sub">Punjab Kings · Unbeaten, 5W 1NR</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Orange Cap</div>
+      <div class="stat-big">283 <em>runs</em></div>
+      <div class="stat-sub">H. Klaasen · Sunrisers Hyderabad</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Purple Cap ★ CSK</div>
+      <div class="stat-big">13 <em>wkts</em></div>
+      <div class="stat-sub">Anshul Kamboj · Chennai Super Kings</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">CSK Equation</div>
+      <div class="stat-big">P7 <em>·</em> −7</div>
+      <div class="stat-sub">7 pts off leaders · 8 games left</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ═══════════════════════════════════════════════════════════════ -->
+<div class="footer-wrap">
+  <footer class="footer">
+    <!-- ✏️ Replace Esther below -->
+    <div class="f-note">For Esther · eyes only<span class="f-dot"></span>Yellove Forever 💛</div>
+    <div class="f-brand">The <em>Dugout</em></div>
+  </footer>
+</div>
+
+<script>
+window.__dugout = (function () {
+  'use strict';
+
+  /* ── Constants ─────────────────────────────────────────────── */
+  const BASE       = 'https://api.cricapi.com/v1';
+  // CORS proxy only needed when opening as a local file
+  const PROXY      = location.protocol === 'file:' ? 'https://api.allorigins.win/raw?url=' : '';
+  const apiFetch   = url => fetch(PROXY + (PROXY ? encodeURIComponent(url) : url));
+  const LS_KEY     = 'dugout_apikey';
+  const NORMAL_MS  = 30 * 60 * 1000;
+  const LIVE_MS    =  5 * 60 * 1000;
+  const CSK_RE     = /chennai/i;
+
+  const TEAM_COLOR = {
+    'chennai super kings':'var(--t-csk)',
+    'royal challengers bengaluru':'var(--t-rcb)',
+    'royal challengers bangalore':'var(--t-rcb)',
+    'mumbai indians':'var(--t-mi)',
+    'kolkata knight riders':'var(--t-kkr)',
+    'sunrisers hyderabad':'var(--t-srh)',
+    'rajasthan royals':'var(--t-rr)',
+    'gujarat titans':'var(--t-gt)',
+    'punjab kings':'var(--t-pbks)',
+    'lucknow super giants':'var(--t-lsg)',
+    'delhi capitals':'var(--t-dc)',
+  };
+  const TEAM_SHORT = {
+    'chennai super kings':'CSK','royal challengers bengaluru':'RCB',
+    'royal challengers bangalore':'RCB','mumbai indians':'MI',
+    'kolkata knight riders':'KKR','sunrisers hyderabad':'SRH',
+    'rajasthan royals':'RR','gujarat titans':'GT',
+    'punjab kings':'PBKS','lucknow super giants':'LSG','delhi capitals':'DC',
+  };
+
+  /* ── State ─────────────────────────────────────────────────── */
+  const HARDCODED_KEY = 'df9d8cc9-23da-4711-bb0d-fe6ff94e4ac3';
+  localStorage.setItem(LS_KEY, HARDCODED_KEY);
+  let apiKey   = HARDCODED_KEY;
+  let timer    = null;
+  let isLive   = false;
+
+  /* ── Utils ─────────────────────────────────────────────────── */
+  const $  = id => document.getElementById(id);
+  const tl = s  => (s || '').toLowerCase().trim();
+  const pad = n => String(n).padStart(2, '0');
+  const teamColor = n => TEAM_COLOR[tl(n)] || 'var(--ink-3)';
+  const teamShort = n => TEAM_SHORT[tl(n)] || (n || '').slice(0, 3).toUpperCase();
+
+  function setStatus(cls, txt) {
+    const el = $('apiStatus');
+    el.className = 'api-status ' + cls;
+    $('apiStatusText').textContent = txt;
+  }
+  function spin(on) {
+    $('refreshBtn').classList.toggle('spinning', on);
+  }
+
+  /* ── Setup overlay ─────────────────────────────────────────── */
+  function showSetup() { $('setupOverlay').classList.remove('hidden'); }
+  function hideSetup() { $('setupOverlay').classList.add('hidden'); }
+
+  $('connectBtn').addEventListener('click', async () => {
+    const key = $('apiKeyInput').value.trim();
+    if (!key) { $('setupError').textContent = 'Please paste your API key.'; return; }
+    $('setupError').textContent = '';
+    $('connectBtn').textContent = 'Testing…';
+    try {
+      const r = await apiFetch(`${BASE}/currentMatches?apikey=${key}&offset=0`);
+      const d = await r.json();
+      if (d.status === 'failure' || d.status === 'error') throw new Error(d.reason || 'Invalid key');
+      apiKey = key;
+      localStorage.setItem(LS_KEY, apiKey);
+      hideSetup();
+      fetchAll();
+      scheduleRefresh();
+    } catch (e) {
+      $('setupError').textContent = '✗ ' + (e.message || 'Connection failed — check your key.');
+    } finally {
+      $('connectBtn').textContent = 'Connect';
+    }
+  });
+  $('apiKeyInput').addEventListener('keydown', e => { if (e.key === 'Enter') $('connectBtn').click(); });
+  /* ── Master refresh ────────────────────────────────────────── */
+  async function fetchAll() {
+    if (!apiKey) return;
+    spin(true);
+    setStatus('', 'Refreshing…');
+    try {
+      await fetchLive();
+      const n = new Date();
+      setStatus(isLive ? 'live' : 'ok', isLive ? 'CSK LIVE' : `Updated ${pad(n.getHours())}:${pad(n.getMinutes())}`);
+    } catch (e) {
+      setStatus('err', 'Update failed');
+      console.warn('[Dugout]', e);
+    } finally {
+      spin(false);
+    }
+  }
+
+  /* ── Live scores ───────────────────────────────────────────── */
+  async function fetchLive() {
+    const r = await apiFetch(`${BASE}/currentMatches?apikey=${apiKey}&offset=0`);
+    const d = await r.json();
+    if (d.status !== 'success') throw new Error(d.reason);
+    renderLive(d.data || []);
+  }
+
+  function renderLive(matches) {
+    const m = matches.find(x => (x.teams || []).some(t => CSK_RE.test(t)));
+    const banner = $('liveBanner');
+
+    // No CSK match found at all
+    if (!m) {
+      banner.classList.remove('visible');
+      if (isLive) { isLive = false; scheduleRefresh(); }
+      return;
+    }
+
+    // Match exists but is already finished — don't touch the next-match block
+    const ongoing = !/won|lost|tied|draw|no result/i.test(m.status || '');
+    if (!ongoing) {
+      banner.classList.remove('visible');
+      if (isLive) { isLive = false; scheduleRefresh(); }
+      return;
+    }
+
+    // Only reaches here when CSK match is genuinely live
+    banner.classList.add('visible');
+    const sc  = m.score || [];
+    const fmt = s => s ? `${s.r}/${s.w} (${s.o} ov)` : 'Yet to bat';
+    $('liveTeam1').textContent  = teamShort(m.teams?.[0]);
+    $('liveScore1').textContent = fmt(sc[0]);
+    $('liveTeam2').textContent  = teamShort(m.teams?.[1]);
+    $('liveScore2').textContent = fmt(sc[1]);
+    $('liveStatus').textContent = m.status || '';
+
+    if (!isLive) { isLive = true; scheduleRefresh(); }
+  }
+
+  /* ── Scheduler ─────────────────────────────────────────────── */
+  function scheduleRefresh() {
+    if (timer) clearInterval(timer);
+    timer = setInterval(fetchAll, isLive ? LIVE_MS : NORMAL_MS);
+  }
+
+  /* ── Countdown ─────────────────────────────────────────────── */
+  function startCountdown(iso) {
+    const target = new Date(iso).getTime();
+    const tick = () => {
+      const diff = target - Date.now();
+      if (diff <= 0) { ['cd-d','cd-h','cd-m','cd-s'].forEach(id => { const el=$(id); if(el) el.textContent='00'; }); return; }
+      $('cd-d').textContent = pad(Math.floor(diff / 86400000));
+      $('cd-h').textContent = pad(Math.floor((diff % 86400000) / 3600000));
+      $('cd-m').textContent = pad(Math.floor((diff % 3600000) / 60000));
+      $('cd-s').textContent = pad(Math.floor((diff % 60000) / 1000));
+    };
+    tick(); setInterval(tick, 1000);
+  }
+
+  /* ── Boot ───────────────────────────────────────────────────── */
+  (function init() {
+    // Greeting
+    const now = new Date(), h = now.getHours();
+    const g = h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
+    // ✏️ Replace Esther below
+    $('greeting').textContent = g + ', Esther';
+    const D=['SUN','MON','TUE','WED','THU','FRI','SAT'], M=['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+    $('dateline').textContent = D[now.getDay()] + ' · ' + pad(now.getDate()) + ' ' + M[now.getMonth()] + ' · ' + now.getFullYear();
+
+    startCountdown('2026-04-23T14:00:00Z');
+
+    // Scroll cal
+    setTimeout(() => {
+      const strip = document.querySelector('.cal-strip');
+      const el = strip?.querySelector('.cal-round.next');
+      if (el) strip.scrollTo({ left: el.offsetLeft - 60, behavior: 'smooth' });
+    }, 600);
+
+    if (!apiKey) { showSetup(); setStatus('', 'Not connected'); }
+    else { hideSetup(); setStatus('', 'Connecting…'); fetchAll(); scheduleRefresh(); }
+  })();
+
+  return { refresh: fetchAll, showSetup };
+})();
+</script>
+</body>
+</html>
